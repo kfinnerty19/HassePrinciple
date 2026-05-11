@@ -24,6 +24,15 @@ noncomputable def _root_.HilbertSymbol (a b : kˣ) : ℤˣ := by
   classical exact if ∃ z x y : k, (z, x, y) ≠ (0, 0, 0) ∧
   z ^ 2 - a * x ^ 2 - b * y ^ 2 = 0 then 1 else -1
 
+/-- TODO -/
+lemma well_defined_up_to_squares (a b a' b' : kˣ) : HilbertSymbol a b = HilbertSymbol
+  (a * a'^2) (b * b'^2) := by
+  sorry
+
+/-- TODO -/
+lemma sym (a b : kˣ) : HilbertSymbol a b = HilbertSymbol b a := by
+  sorry
+
 /-
 # Basic properties of the Hilbert symbol
 -/

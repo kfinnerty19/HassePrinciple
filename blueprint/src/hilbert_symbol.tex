@@ -28,6 +28,14 @@ The Hilbert symbols has the following properties, useful for computing it in pra
 	Let $a, b, a', b' \in k^\times$. Then $(a,b)_k = (a a'^2, b b'^2)_k$.
 \end{lemma}
 
+\begin{lemma}
+	\label{lem:sym}
+	\lean{HilbertSymbol.sym}
+	\uses{def:Hilbert_symbol}
+	\leanok
+	For $a, b \in k^\times$, we have $(a, b)_k = (b, a)_k$.
+\end{lemma}
+
 The following definition and lemma use \code{QuadraticAlgebra} from \mathlib.
 
 \begin{definition}
@@ -47,13 +55,6 @@ The following definition and lemma use \code{QuadraticAlgebra} from \mathlib.
 	that $a = N_{k(\sqrt{b})/k}(t)$.
 \end{lemma}
 
-\begin{lemma}
-	\label{lem:sym}
-	\lean{HilbertSymbol.sym}
-	\uses{def:Hilbert_symbol}
-	\leanok
-	For $a, b \in k^\times$, we have $(a, b)_k = (b, a)_k$.
-\end{lemma}
 
 \begin{lemma}
 	\label{lem:one_of_square}
