@@ -218,7 +218,8 @@ theorem padic_2 (x y : (ℚ_[2])ˣ) :
 -/
 open Nat
 
--- For a, b in ℚˣ, and for all places of ℚ, we define the Hilbert symbol of a and b at that place.
+/-- For a, b in ℚˣ, and for all places of ℚ, we define the Hilbert symbol of a and b at that
+place.--/
 def at_p (a b : ℚˣ) (p : ℕ) [hp : Fact (Nat.Prime p)] : ℤˣ :=
   let ap := Units.map (RingHom.toMonoidHom (algebraMap ℚ ℚ_[p])) a
   let bp := Units.map (RingHom.toMonoidHom (algebraMap ℚ ℚ_[p])) b
