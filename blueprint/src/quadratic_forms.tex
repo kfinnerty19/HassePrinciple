@@ -11,7 +11,8 @@ Let $M$ be a module over a commutative ring $A$. A function $f : M \to A$ is cal
 \end{enumerate}
 \end{definition}
 
-The \code{QuadraticForm} folder of \mathlib contains definitions and results about quadratic forms, including the bilinear map associated to a quadratic form (see \code{QuadraticMap.associated}) and the definition and characterization of nondegenerate quadratic form (see \code{QuadraticMap.Nondegenerate}).
+The \code{QuadraticForm} folder of \mathlib contains definitions and results about quadratic forms, including the bilinear map 
+\[ (x, y) \mapsto x \cdot y := \frac{1}{2}(f(x + y) - f(x) - f(y))\] associated to a quadratic form (see \code{QuadraticMap.associated}) and the definition and characterization of nondegenerate quadratic form (see \code{QuadraticMap.Nondegenerate}).
 
 \begin{definition}\label{def:isotropic}
 \lean{QuadraticMap.Isotropic}
@@ -51,8 +52,11 @@ A sequence of bases $(b^{(0)} = b, \cdots, b^{(m)} = b')$ as in Theorem \ref{thm
 \end{definition}
 
 \begin{lemma}\label{lem:exists_const}
-	\lean{Module.Basis.exists_const}
-	\leanok
+\lean{Module.Basis.exists_const}
+\leanok
+Let $V$ be a $K$-vector space of dimension at least $3$, let $Q$ be a nondegenerate quadratic form on $V$, and let $b, b'$ be two $Q$-orthogonal bases of $V$. Assume that 
+\[ (b_1 \cdot b_1)(b_i' \cdot b_i') - (b_i' \cdot b_i')^2 = 0 \text{ for } i = 1, 2. \]
+There exists $x \in K$ such that $b_x := b_1' + x b_2'$ is nonisotropic and generates with $b_1$ a nondegenerate plane.
 \end{lemma}
 
 \begin{proof}

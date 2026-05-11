@@ -31,7 +31,13 @@ structure Chain (Q : QuadraticForm k V) (b b' : Basis (Fin (finrank k V)) k V) :
 -- Used in the proof of case (iii) of Theorem 2.
 lemma exists_const (hdim : 3 ≤ finrank k V) (hQ : Q.Nondegenerate)
     {b b' : Basis (Fin (finrank k V)) k V} (hb : Q.associated.IsOrthoᵢ b)
-    (hb' : Q.associated.IsOrthoᵢ b') :
+    (hb' : Q.associated.IsOrthoᵢ b')
+    (h1 : (Q.associated (b ⟨1, by omega⟩) (b ⟨1, by omega⟩)) *
+      (Q.associated (b' ⟨1, by omega⟩) (b' ⟨1, by omega⟩)) -
+      (Q.associated (b' ⟨1, by omega⟩) (b' ⟨1, by omega⟩)) ^ 2 = 0)
+    (h2 : (Q.associated (b ⟨1, by omega⟩) (b ⟨1, by omega⟩)) *
+      (Q.associated (b' ⟨2, by omega⟩) (b' ⟨2, by omega⟩)) -
+      (Q.associated (b' ⟨2, by omega⟩) (b' ⟨2, by omega⟩)) ^ 2 = 0) :
     ∃ (x : k), Q (b' ⟨1, by omega⟩ + x • b' ⟨2, by omega⟩) ≠ 0 ∧
     ((Q.restrict (Submodule.span k {b ⟨1, by omega⟩,
       b' ⟨1, by omega⟩ + x • b' ⟨2, by omega⟩}))).Nondegenerate := by
