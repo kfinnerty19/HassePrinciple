@@ -161,7 +161,7 @@ The value $\epsilon(f)$ does not depend on the choice of diagonal quadratic form
 \begin{proof}
 Let $b = (b_1, \cdots, b_n)$ be an orthogonal basis for $V$ such that $Q(x) = a_1 x_1^2 + \cdots + a_n x_n^2$ for $x = \sum x_i b_i$. We denote  $\epsilon(b) := \prod_{i < j}(a_i, a_j)$. 
 
-If $n=1$, then $\epsilon(f) = 1$. If $n=2$, then $\epsilon(f) = 1$ if and only if the form $Z^2 - a_1 X^2 - a_2 Y^2$ represents $0$. By {\color{red}{TODO}}, this is equivalent to $a_1 X^2 + a_2 Y^2$ representing $1$, which means that there exists $v \in V$ with $Q(v) = 1$; this is independent on $b$. 
+If $n=1$, then $\epsilon(f) = 1$. If $n=2$, then $\epsilon(f) = 1$ if and only if the form $Z^2 - a_1 X^2 - a_2 Y^2$ represents $0$. By Corollary \ref{cor:represents_iff}, this is equivalent to $a_1 X^2 + a_2 Y^2$ representing $1$, which means that there exists $v \in V$ with $Q(v) = 1$; this is independent on $b$. 
 For $n \ge 3$ we use induction on $n$. By \ref{thm:exists_chain}, it suffices to prove that for any pair of contiguous bases $b$ and $b'$, we have $\epsilon(b) = \epsilon(b')$. 
 Thanks to the symmetry of the Hilbert symbol, $\epsilon(b)$ is unchanged by permutation of the basis elements, so we may assume that $b_1 = b_1'$.
 Then $b_1' \cdot b_1' = a_1$, and we can write 
@@ -187,6 +187,17 @@ Each term in the product is equal to $\pm 1$.
 	\uses{def:HM_inv}
 	Let $k$ be either $\Q_p$ or $\R$. Let $f$ be a quadratic form of rank $2$ over $k$, and let $a \in k^\times / {k^\times}^2$. Then $f$ represents $a$ if and only if $(a, -d(f)) = \epsilon(f)$.
 \end{lemma}
+
+\begin{proof}
+$f$ is equivalent to $aX^2 + bY^2 + cZ^2$ for some $a, b, c \in k^\times$, and $f$ represents $0$ if and only if the form $-caX^2 -cbY^2 - Z^2$ represents $0$.
+
+By the definition of Hilbert symbol, this last form represents $0$ if and only if $(-ca, -cb) = 1$.
+This is equivalent to
+\[ (-1, -1)(-1, a)(-1, b)(c, c)(a, b)(a, c)(b, c) = 1. \]
+By \textcolor{red}{TODO : cite III Prop 2(iv)}, $(c, c) = (-1, c)$, so this can be rewritten as 
+\[ 1 = (-1, -1)(-1, abc)(a, b)(a, c)(b, c) = (-1, -d(f))\epsilon(f), \]
+or equivalently, $(-1, -d(f)) = \epsilon(f)$.
+\end{proof}
 
 \begin{lemma}\label{lem:represents_iff_rk_2}
 \uses{def:HM_inv}
@@ -320,11 +331,10 @@ Write $b' = b'' u^2$, with $b'', u$ integers and $b''$ square-free, so $|b''| < 
 \begin{proof}
 Up to equivalence, we may assume $f = aX_1^2 + bX_2^2 - (cX_3^2 + dX_4^2)$. Fix a place $v \in V$. Since $f_v$ represents $0$, Corollary \ref{cor:prod_isotropic_iff} shows that there exists $x_v \in \Q_v^\times$ which is represented both by $aX_1^2 + bX_2^2$ and by  $cX_3^2 + dX_4^2$.
 
-%By Corollary \textcolor{red}{TODO} when $v=p$, and Lemma \textcolor{red}{TODO} when $v= \infty$, this is equivalent to saying that 
-By Lemma \textcolor{red}{TODO}, this is equivalent to saying that 
+By Lemma \ref{lem:represents_iff_rk_2}, this is equivalent to saying that 
 \[ (x_v, -ab)_v = (a, b)_v \quad \text{and} \quad (x_v, -cd)_v = (c, d)_v \: \text{ for all } v \in V. \]
 
-Since $\displaystyle \prod_{v \in V} (a, b)_v = \prod_{v \in V} (c, d)_v = 1$ by Theorem \ref{thm:product_formula}, we can deduce from \textcolor{red}{TODO} the existence of $x \in \Q^\times$ such that 
+Since $\displaystyle \prod_{v \in V} (a, b)_v = \prod_{v \in V} (c, d)_v = 1$ by Theorem \ref{thm:product_formula}, we can deduce from \textcolor{red}{TODO: cite III.2.2 Thm 4} the existence of $x \in \Q^\times$ such that 
 \[ (x, -ab)_v = (a, b)_v \quad \text{and} \quad (x, -cd)_v = (c, d)_v \: \text{ for all } v \in V. \]
 
 This shows that the form $aX_1^2 + bX_2^2 - xZ^2$ represents zero in each $\Q_v$, so by Lemma \ref{lem:isotr_of_rk_three}, it also represents $0$ in $\Q$. By Corollary \ref{cor:represents_iff}, $x$ is represented by $aX_1^2 + bX_2^2$. The same argument shows that $x$ is represented by $cX_1^2 + dX_2^2$. By applying Corollary \ref{cor:prod_isotropic_iff} again, we conclude that $f$ represents $0$.
