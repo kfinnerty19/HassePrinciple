@@ -35,7 +35,7 @@ Two bases of $V$ are called \emph{contiguous} if they have an element in common.
 
 \begin{theorem}\label{thm:exists_chain}
 \lean{Module.Basis.chain_of_nondegenerate}
-\uses{def:chain}
+\uses{def:chain, lem:exists_const}
 \leanok
 Let $V$ be a $K$-vector space of dimension at least $3$, let $Q$ be a nondegenerate quadratic form on $V$, and let $b, b'$ be two $Q$-orthogonal bases of $V$. Then there exists a finite sequence $(b^{(0)}, \cdots, b^{(m)})$ of orthogonal bases of $V$ such that $b^{(0)} = b$, $b^{(m)} = b'$ and $b^{(i)}$ is contiguous with $b^{(i + 1)}$ for $0 \le i < m$.
 \end{theorem}
@@ -82,13 +82,13 @@ The quadratic form $XY$ is hyperbolic.
 
 % NOTE: if needed, assume $R$ is a field.
 \begin{definition}\label{def:represents}
-\lean{QuadraticForm.represents}
+\lean{QuadraticMap.represents}
 \leanok
 Let $R$ be a commutative ring, let $V$ be an $R$-module and let $Q$ be a quadratic form on $V$. We say that $Q$ \emph{represents} an element $r \in R$ if there exists $x \in V$ such that $Q(v) = r$ and $v \ne 0$.
 \end{definition}
 
 \begin{lemma}\label{lem:represents_zero}
-\lean{QuadraticForm.represents_zero_iff_isotropic}
+\lean{QuadraticMap.represents_zero_iff_isotropic}
 \leanok
 \uses{def:represents}
 Let $R$ be a commutative ring, let $V$ be an $R$-module and let $Q$ be a quadratic form on $V$. Then $Q$ \emph{represents} $0$ if and only if it is isotropic.
@@ -153,7 +153,7 @@ Let $p$ be a prime number and let $f$ be a quadratic form of rank $n$ over $\Q_p
 \end{definition}
 
 \begin{lemma}\label{lem:HM_inv_well_defined}
-\uses{def:HM_inv}
+\uses{def:HM_inv, thm:exists_chain}
 \lean{QuadraticForm.HasseMinkoskiInvariant.eq_of_equivalent}
 \leanok
 The value $\epsilon(f)$ does not depend on the choice of diagonal quadratic form equivalent to $f$.
@@ -204,7 +204,7 @@ or equivalently, $(-1, -d(f)) = \epsilon(f)$.
 \begin{lemma}\label{lem:represents_iff_rk_2}
 \lean{QuadraticForm.represents_iff_of_rank_two}
 \leanok
-\uses{def:HM_inv}
+\uses{lem:represents_zero_iff_rk_3}
 Let $k$ be either $\Q_p$ or $\R$. Let $f$ be a quadratic form of rank $2$ over $k$, and let $a \in k^\times / {k^\times}^2$. Then $f$ represents $a$ if and only if $(a, -d(f)) = \epsilon(f)$.
 \end{lemma}
 \begin{proof}
