@@ -325,7 +325,7 @@ Let $a, b \in \Q^\times$. Then the product of the Hilbert symbols of the pair $(
 is $1$.
 \end{theorem}
 
-\subsection{Approximation Theorem}
+\subsection{Approximation and Existence Theorem}
 
 The following is a generalization of the Chinese Remainder Theorem that is in \code{mathlib}.
 
@@ -353,7 +353,6 @@ product of $\R$ and the factors $\Q_p$ for $p \in S$.
 N.B. more precisely, in the Lean code, S is a subset of the natural numbers, and the product is
 over the $n$-th prime for $n \in S$.
 
-
 \begin{definition}
 	\label{def:finite_embedding}
 	\lean{HilbertSymbol.finite_embedding}
@@ -372,10 +371,25 @@ We define the finite embedding of $\Q$ into $\rm{Prod\_over\_S} (S)$ as the natu
 	between $y$ and the image of $x$ is less than $\epsilon$.
 \end{theorem}
 
+
 \begin{theorem}\label{thm:existence}
 	\lean{HilbertSymbol.existence}
-	\uses{}
-	%\leanok
-	TODO
-
+	\uses{def:Hilbert_symbol, def:at_p, def:at_infty}
+	\leanok
+	Let $(a_i)_{i \in \I}$ be a finite family of nonzero rational numbers, and let
+	$e_{i,v} \in \{\pm 1\}$ for each $i \in I$ and each place $v$ of $\Q$. There exists a rational
+	number $x \in \Q^\times$ such that
+	\[
+	\forall i \in I, \forall v \text{ place of } \Q, (x,a_i)_v=e_{i,v}
+	\]
+	if and only if the following conditions hold:
+	\begin{itemize}
+		\item For each $i \in I$, we have $e_{i,v}=1$ for all but finitely many places $v$.
+		\item For each $i \in I$, we have $\prod_v e_{i,v}=1$.
+		\item For each place $v$, there exists $x_v \in \Q_v^\times$ such that
+		$(x_v, a_i)_v = e_{i,v}$ for all $i \in I$.
 \end{theorem}
+
+\begin{proof}
+TODO: necessity uses product formula, sufficiency uses the theorems in this section.
+\end{proof}

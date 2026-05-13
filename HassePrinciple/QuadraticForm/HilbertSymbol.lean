@@ -282,11 +282,15 @@ theorem approximation (S : Finset ℕ) : ∀ ε > 0, ∀ y : Prod_over_S S, ∃ 
   ‖y.1 - x‖ + Finset.sum (Finset.attach S) (fun n => ‖y.2 n - x‖) < ε := by
   sorry
 
-
-/-
-these two are "lemmas" to prove existence of rational numbers with given HS. Do we need that too?
--/
 /-- TODO -/
-theorem existence : true := by sorry
+theorem existence {I : Type*} [Fintype I] (a : I → ℚˣ) (efin : I × ℕ → ℤˣ) (einf : I → ℤˣ) :
+  ∃ x : ℚˣ, ∀ i : I, ∀ n : ℕ, efin (i, n) = at_p x (a i) (Nat.nth Nat.Prime n) ∧ einf i =
+  at_infty x (a i) ↔ ∃ S : Finset ℕ, ∀ n , n ∉ S → efin (i, n) = 1 ∧ ∀ i : I, einf i * ∏ (n ∈ S),
+  efin (i, n) = 1 ∧ ∀ n : ℕ, ∃ xn : ℚ_[Nat.nth Nat.Prime n]ˣ, efin (i, n) = HilbertSymbol xn
+  (Units.map (RingHom.toMonoidHom (algebraMap ℚ ℚ_[Nat.nth Nat.Prime n])) (a i)) ∧ ∃ xr : ℝˣ,
+  einf i = HilbertSymbol xr (Units.map (RingHom.toMonoidHom (algebraMap ℚ ℝ)) (a i))
+  := by
+  sorry
+
 
 end HilbertSymbol
