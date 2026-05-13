@@ -388,7 +388,10 @@ We define the finite embedding of $\Q$ into $\rm{Prod\_over\_S} (S)$ as the natu
 		\item For each $i \in I$, we have $\prod_v e_{i,v}=1$.
 		\item For each place $v$, there exists $x_v \in \Q_v^\times$ such that
 		$(x_v, a_i)_v = e_{i,v}$ for all $i \in I$.
+	\end{itemize}
 \end{theorem}
+
+The proof uses \code{Nat.infinite_setOf_prime_and_modEq}.
 
 \begin{proof}
 	\uses{def:Hilbert_symbol, def:at_p, def:at_infty, thm:chineseRemainder, thm:approximation}
