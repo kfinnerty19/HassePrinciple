@@ -72,8 +72,28 @@ Let $p$ be a prime and $x \in \Q_p^\times$. The \emph{unit part} of $x$ is defin
 of $\Z_p^\times$ corresponding to $x \cdot p^{-v_p(x)}$.
 \end{definition}
 
-\begin{definition}\label{def:legp}
-  \lean{Padic.legp}
+\begin{lemma}
+	\label{lem:is_twoadic_unit_odd_p}
+	\lean{Padic.is_twoadic_unit_odd_p}
+	\leanok
+Let $p$ be an odd prime. Then its image in $\Z_2$ is a unit.
+\end{lemma}
+
+\begin{proof}
+TODO
+\end{proof}
+
+\begin{definition}
+	\label{def:p2}
+	\lean{Padic.p2}
+	\uses{lem:is_twoadic_unit_odd_p}
+	\leanok
+Let $p$ be an odd prime. Then we define $p_{in_Q2} \in (\Z_2)^\times$ as the image of $p$ in
+$(\Z_2)^\times$.
+\end{definition}
+
+\begin{definition}\label{def:legendreSymbol}
+  \lean{Padic.legendreSymbol'}
   \leanok
 Let $p$ be a prime and $u \in \Z_p^\times$. The \emph{Legendre symbol} $\left(\dfrac{u}{p}\right)$
 is defined as

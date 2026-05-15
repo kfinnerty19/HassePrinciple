@@ -21,7 +21,7 @@ noncomputable def padicUnitPart_qp {p : ℕ} [hp : Fact (Nat.Prime p)] (x : ℚ_
 
 /-- TODO -/
 lemma padic_unit_part_unit {p : ℕ} [hp : Fact (Nat.Prime p)] (x : (ℚ_[p])ˣ) :
-  ‖padicUnitPart_qp x‖ = 1 := by
+    ‖padicUnitPart_qp x‖ = 1 := by
   sorry
 
 /-- TODO -/
@@ -29,7 +29,16 @@ noncomputable def padicUnitPart {p : ℕ} [hp : Fact (Nat.Prime p)] (x : (ℚ_[p
   PadicInt.mkUnits (padic_unit_part_unit x)
 
 /-- TODO -/
-noncomputable def legp {p : ℕ} [hp : Fact (Nat.Prime p)] (u : ℤ_[p]ˣ) : ℤˣ :=
-  if legendreSym p ((u.val).appr p % p) = 1 then 1 else -1
+lemma is_unit_odd_p {p : ℕ} [hp : Fact (Nat.Prime p)] (hp2 : p ≠ 2) : ‖(p : ℚ_[2])‖ = 1 := by
+  sorry
+
+/-- TODO -/
+noncomputable abbrev p2 {p : ℕ} [hp : Fact (Nat.Prime p)] (hp2 : p ≠ 2) : ℤ_[2]ˣ :=
+  PadicInt.mkUnits (is_unit_odd_p hp2)
+
+--not sure how to give the name Padic.legendreSym
+/-- TODO -/
+noncomputable def legendreSym' {p : ℕ} [hp : Fact (Nat.Prime p)] (u : ℤ_[p]ˣ) : ℤ :=
+  legendreSym p ((u.val).appr p % p)
 
 end Padic
