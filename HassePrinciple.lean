@@ -6,7 +6,7 @@ import HassePrinciple.QuadraticForm.Basic
 import HassePrinciple.QuadraticForm.HasseMinkowski
 import HassePrinciple.QuadraticForm.HasseMinkowskiInvariant
 import HassePrinciple.QuadraticForm.HighRank
-import HassePrinciple.QuadraticForm.HilbertSymbol
+import HassePrinciple.HilbertSymbol
 import HassePrinciple.QuadraticForm.RankFour
 import HassePrinciple.QuadraticForm.RankThree
 import HassePrinciple.QuadraticForm.Rat
