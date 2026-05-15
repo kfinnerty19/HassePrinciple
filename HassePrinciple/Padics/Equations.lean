@@ -14,7 +14,6 @@ public import Mathlib.Topology.Algebra.OpenSubgroup
 
 @[expose] public section
 
-
 /-- An indexed family `f : σ → M` of elements is called primitive if at least one of the
   elements in the image is a unit. -/
 def Function.IsPrimitive {M σ : Type*} [Monoid M] (f : σ → M) : Prop :=

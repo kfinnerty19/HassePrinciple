@@ -10,7 +10,6 @@ public import Mathlib.Algebra.QuadraticAlgebra.Basic
 public import Mathlib.NumberTheory.PrimeCounting
 public import Mathlib.NumberTheory.LSeries.PrimesInAP
 
-
 @[expose] public section
 
 noncomputable section
@@ -105,70 +104,69 @@ lemma is_unit_odd_p {p : ℕ} [hp : Fact (Nat.Prime p)] (hp2 : p ≠ 2) : ‖(p 
   sorry
 
 /-- TODO -/
-def p_in_Q2 {p : ℕ} [hp : Fact (Nat.Prime p)] (hp2 : p ≠ 2) : ℤ_[2]ˣ :=
+abbrev p_in_Q2 {p : ℕ} [hp : Fact (Nat.Prime p)] (hp2 : p ≠ 2) : ℤ_[2]ˣ :=
   PadicInt.mkUnits (is_unit_odd_p hp2)
 
 --better name?
 /-- TODO -/
-lemma nontrivialzero {p : ℕ} [hp : Fact (Nat.Prime p)] (v : (ℚ_[p])ˣ) (z x y : ℚ_[p])
-  (hnontriv : (x, y, z) ≠ (0, 0, 0)) (hsol : z ^ 2 - p * x ^ 2 - v * y ^ 2 = 0) :
-  ∃ z' y' : (ℚ_[p])ˣ, ∃ x' : ℤ_[p], (z' : ℚ_[p])^2 - p*(x' : ℚ_[p])^2 - v*(y' : ℚ_[p])^2 = 0 := by
+lemma exists_nontrivial_zero {p : ℕ} [hp : Fact (Nat.Prime p)] (v : (ℚ_[p])ˣ) (z x y : ℚ_[p])
+    (hnontriv : (x, y, z) ≠ (0, 0, 0)) (hsol : z ^ 2 - p * x ^ 2 - v * y ^ 2 = 0) :
+    ∃ z' y' : (ℚ_[p])ˣ, ∃ x' : ℤ_[p], (z' : ℚ_[p])^2 - p*(x' : ℚ_[p])^2 - v*(y' : ℚ_[p])^2 = 0 := by
   sorry
 
---shall I replace the statements with the expected results of the formulas?
 /-- TODO -/
 lemma padic_odd_p_case00 {p : ℕ} [hp : Fact (Nat.Prime p)] (hp2 : p ≠ 2) (x y : (ℚ_[p])ˣ)
-  (hα0 : valuation (x : ℚ_[p]) = 0) (hβ0 : valuation (y : ℚ_[p]) = 0) :
-  HilbertSymbol x y =
-    let v_x := valuation (x : ℚ_[p])
-    let v_y := valuation (y : ℚ_[p])
-    let u_x := padicUnitPart x
-    let u_y := padicUnitPart y
-    let p_in_Q2 := p_in_Q2 hp2
-    let legpx := legp u_x
-    let legpy := legp u_y
-    (-1) ^ (v_x * v_y * epsilon (p_in_Q2 : ℤ_[2]ˣ)) * legpx * legpy := by
+    (hα0 : valuation (x : ℚ_[p]) = 0) (hβ0 : valuation (y : ℚ_[p]) = 0) :
+    HilbertSymbol x y =
+      let v_x := valuation (x : ℚ_[p])
+      let v_y := valuation (y : ℚ_[p])
+      let u_x := padicUnitPart x
+      let u_y := padicUnitPart y
+      let p_in_Q2 := p_in_Q2 hp2
+      let legpx := legp u_x
+      let legpy := legp u_y
+      (-1) ^ (v_x * v_y * epsilon (p_in_Q2 : ℤ_[2]ˣ)) * legpx * legpy := by
   sorry
 
 /-- TODO -/
 lemma padic_odd_p_case10 {p : ℕ} [hp : Fact (Nat.Prime p)] (hp2 : p ≠ 2) (x y : (ℚ_[p])ˣ)
-  (hα0 : valuation (x : ℚ_[p]) = 1) (hβ0 : valuation (y : ℚ_[p]) = 0) :
-  HilbertSymbol x y =
-    let v_x := valuation (x : ℚ_[p])
-    let v_y := valuation (y : ℚ_[p])
-    let u_x := padicUnitPart x
-    let u_y := padicUnitPart y
-    let p2 := p_in_Q2 hp2
-    let legpx := legp u_x
-    let legpy := legp u_y
-    (-1) ^ (v_x * v_y * epsilon (p2 : ℤ_[2]ˣ)) * legpx * legpy := by
+    (hα0 : valuation (x : ℚ_[p]) = 1) (hβ0 : valuation (y : ℚ_[p]) = 0) :
+    HilbertSymbol x y =
+      let v_x := valuation (x : ℚ_[p])
+      let v_y := valuation (y : ℚ_[p])
+      let u_x := padicUnitPart x
+      let u_y := padicUnitPart y
+      let p2 := p_in_Q2 hp2
+      let legpx := legp u_x
+      let legpy := legp u_y
+      (-1) ^ (v_x * v_y * epsilon (p2 : ℤ_[2]ˣ)) * legpx * legpy := by
   sorry
 
 /-- TODO -/
 lemma padic_odd_p_case11 {p : ℕ} [hp : Fact (Nat.Prime p)] (hp2 : p ≠ 2) (x y : (ℚ_[p])ˣ)
-  (hα0 : valuation (x : ℚ_[p]) = 1) (hβ0 : valuation (y : ℚ_[p]) = 1) :
-  HilbertSymbol x y =
-    let v_x := valuation (x : ℚ_[p])
-    let v_y := valuation (y : ℚ_[p])
-    let u_x := padicUnitPart x
-    let u_y := padicUnitPart y
-    let p2 := p_in_Q2 hp2
-    let legpx := legp u_x
-    let legpy := legp u_y
-    (-1) ^ (v_x * v_y * epsilon (p2 : ℤ_[2]ˣ)) * legpx * legpy := by
+    (hα0 : valuation (x : ℚ_[p]) = 1) (hβ0 : valuation (y : ℚ_[p]) = 1) :
+    HilbertSymbol x y =
+      let v_x := valuation (x : ℚ_[p])
+      let v_y := valuation (y : ℚ_[p])
+      let u_x := padicUnitPart x
+      let u_y := padicUnitPart y
+      let p2 := p_in_Q2 hp2
+      let legpx := legp u_x
+      let legpy := legp u_y
+      (-1) ^ (v_x * v_y * epsilon (p2 : ℤ_[2]ˣ)) * legpx * legpy := by
   sorry
 
 /-- TODO -/
 theorem padic_odd_p {p : ℕ} [hp : Fact (Nat.Prime p)] (hp2 : p ≠ 2) (x y : (ℚ_[p])ˣ) :
-  HilbertSymbol x y =
-    let v_x := valuation (x : ℚ_[p])
-    let v_y := valuation (y : ℚ_[p])
-    let u_x := padicUnitPart x
-    let u_y := padicUnitPart y
-    let p2 := p_in_Q2 hp2
-    let legpx := legp u_x
-    let legpy := legp u_y
-    (-1) ^ (v_x * v_y * epsilon (p2 : ℤ_[2]ˣ)) * legpx * legpy := by
+    HilbertSymbol x y =
+      let v_x := valuation (x : ℚ_[p])
+      let v_y := valuation (y : ℚ_[p])
+      let u_x := padicUnitPart x
+      let u_y := padicUnitPart y
+      let p2 := p_in_Q2 hp2
+      let legpx := legp u_x
+      let legpy := legp u_y
+      (-1) ^ (v_x * v_y * epsilon (p2 : ℤ_[2]ˣ)) * legpx * legpy := by
   sorry
 
 /-- TODO -/
@@ -224,7 +222,7 @@ open Nat
 /-- For a, b in ℚˣ, and for all places of ℚ, we define the Hilbert symbol of a and b at that
 place. -/
 def at_p (a b : ℚˣ) (p : ℕ) [hp : Fact (Nat.Prime p)] : ℤˣ :=
-  let ap := Units.map (RingHom.toMonoidHom (algebraMap ℚ ℚ_[p])) a
+  let ap := Units.map ((algebraMap ℚ ℚ_[p]).toMonoidHom) a
   let bp := Units.map (RingHom.toMonoidHom (algebraMap ℚ ℚ_[p])) b
   HilbertSymbol ap bp
 
@@ -234,7 +232,6 @@ def at_infty (a b : ℚˣ) : ℤˣ :=
   let br := Units.map (RingHom.toMonoidHom (algebraMap ℚ ℝ)) b
   HilbertSymbol ar br
 
---do we need this in the blueprint?
 /-- TODO -/
 instance fact_prime_nth_prime (n : ℕ) : Fact (Nat.Prime (Nat.nth Nat.Prime n)) := by
   rw [fact_iff]
@@ -263,35 +260,40 @@ theorem product_formula (a b : ℚˣ) : HilbertSymbol.at_infty a b *
 
 /-- TODO -/
 theorem chineseRemainder (n : ℕ) (h : n > 0) (a : Fin n → ℤ) (m : Fin n → ℕ) (hm : ∀ i, m i > 0)
-(hcoprime : ∀ i j, i ≠ j → Nat.Coprime (m i) (m j)) :
-  ∃ x : ℤ, ∀ i, x % m i = a i % m i := by
+    (hcoprime : ∀ i j, i ≠ j → Nat.Coprime (m i) (m j)) :
+    ∃ x : ℤ, ∀ i, x % m i = a i % m i := by
   sorry
 
 /- Since the proof concerns with the case where ℝ is part of the product, we assume it here
 from the beginning. We can also do a different version if needed. -/
 /-- TODO -/
-def Prod_over_S (S : Finset ℕ) := ℝ × (Π n : S, ℚ_[Nat.nth Nat.Prime n])
+abbrev prod_over_S (S : Finset ℕ) := ℝ × (Π n : S, ℚ_[Nat.nth Nat.Prime n])
 
 --If we state the approximation theorem in a concrete way as below, we don't need this definition.
 /-- TODO -/
-def finite_embedding (S : Finset ℕ) : ℚ → Prod_over_S S :=
+def finite_embedding (S : Finset ℕ) : ℚ → prod_over_S S :=
   fun x => ⟨algebraMap ℚ ℝ x, fun n => (algebraMap ℚ ℚ_[Nat.nth Nat.Prime n]) x⟩
 
 -- I tried a concrete version without using topology. Can reformulate with sup if needed.
 /-- TODO -/
-theorem approximation (S : Finset ℕ) : ∀ ε > 0, ∀ y : Prod_over_S S, ∃ x : ℚ,
-  ‖y.1 - x‖ + Finset.sum (Finset.attach S) (fun n => ‖y.2 n - x‖) < ε := by
+theorem approximation' (S : Finset ℕ) :
+    ∀ ε > 0, ∀ y : prod_over_S S, ∃ x : ℚ,
+      ‖y.1 - x‖ + Finset.sum (Finset.attach S) (fun n => ‖y.2 n - x‖) < ε := by
+  sorry
+
+theorem approximation (S : Finset ℕ) :
+    Dense (Set.range (finite_embedding S)) := by
   sorry
 
 /-- TODO -/
 theorem existence {I : Type*} [Finite I] (a : I → ℚˣ) (efin : I × ℕ → ℤˣ) (einf : I → ℤˣ) :
-  ∃ x : ℚˣ, ∀ i : I, ∀ n : ℕ, efin (i, n) = at_p x (a i) (Nat.nth Nat.Prime n) ∧ einf i =
-  at_infty x (a i) ↔ ∃ S : Finset ℕ, ∀ n , n ∉ S → efin (i, n) = 1 ∧ ∀ i : I, einf i * ∏ (n ∈ S),
-  efin (i, n) = 1 ∧ ∀ n : ℕ, ∃ xn : ℚ_[Nat.nth Nat.Prime n]ˣ, efin (i, n) = HilbertSymbol xn
-  (Units.map (RingHom.toMonoidHom (algebraMap ℚ ℚ_[Nat.nth Nat.Prime n])) (a i)) ∧ ∃ xr : ℝˣ,
-  einf i = HilbertSymbol xr (Units.map (RingHom.toMonoidHom (algebraMap ℚ ℝ)) (a i))
-  := by
+    ∃ x : ℚˣ, ∀ i : I, ∀ n : ℕ, efin (i, n) = at_p x (a i) (Nat.nth Nat.Prime n) ∧
+      einf i = at_infty x (a i) ↔
+      ∃ S : Finset ℕ, ∀ n , n ∉ S → efin (i, n) = 1 ∧
+        ∀ i : I, einf i * ∏ (n ∈ S), efin (i, n) = 1 ∧
+        ∀ n : ℕ, ∃ xn : ℚ_[Nat.nth Nat.Prime n]ˣ, efin (i, n) =
+          HilbertSymbol xn (Units.map (algebraMap ℚ ℚ_[Nat.nth Nat.Prime n]).toMonoidHom (a i)) ∧
+        ∃ xr : ℝˣ, einf i = HilbertSymbol xr (Units.map (algebraMap ℚ ℝ).toMonoidHom (a i)) := by
   sorry
-
 
 end HilbertSymbol
