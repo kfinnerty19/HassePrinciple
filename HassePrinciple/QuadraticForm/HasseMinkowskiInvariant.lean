@@ -1,7 +1,7 @@
 module
 
-public import HassePrinciple.LinearAlgebra.Basis.Chain
 public import HassePrinciple.QuadraticForm.Basic
+public import HassePrinciple.QuadraticForm.Chain
 public import HassePrinciple.HilbertSymbol.Basic
 public import HassePrinciple.HilbertSymbol.ExistenceTheorem
 public import HassePrinciple.NumberTheory.ApproximationTheorem
@@ -32,8 +32,8 @@ variable {V : Type*} [AddCommGroup V] [Module k V]
 variable (Q : QuadraticForm k V)
 
 /-- Auxiliary definition for `HasseMinkoskiInvariant`. -/
-noncomputable def HasseMinkoskiInvariantAux {n : ℕ} (w : Fin n → kˣ) : ℤˣ :=
-  ∏ p : Fin n × Fin n with p.1 < p.2, HilbertSymbol (w p.1) (w p.2)
+noncomputable def HasseMinkoskiInvariantAux {n : ℕ} (w : Fin n → kˣ) : ℤ :=
+  ∏ p : Fin n × Fin n with p.1 < p.2, HilbertSymbol (w p.1 : k) (w p.2)
 
 lemma HasseMinkoskiInvariant_aux.eq_of_equivalent {n : ℕ} {w w' : Fin n → kˣ}
     (h : (QuadraticMap.weightedSumSquares k w).Equivalent (QuadraticMap.weightedSumSquares k w')) :
@@ -54,7 +54,7 @@ The Hasse-Minkowski invariant of `Q` is defined as the product `∏_{i < j} (a_i
 
 This is denoted by `ε(Q)` in Serre's book. -/
 noncomputable def HasseMinkoskiInvariant {Q : QuadraticForm k V}
-    (hQ : LinearMap.SeparatingLeft Q.associated) : ℤˣ :=
+    (hQ : LinearMap.SeparatingLeft Q.associated) : ℤ :=
   HasseMinkoskiInvariantAux (equivalent_weightedSumSquares_units_of_nondegenerate' Q hQ).choose
 
 namespace HasseMinkoskiInvariant
@@ -87,22 +87,19 @@ noncomputable instance : Module ℚ_[p] ℚ_[p] := Semiring.toModule
 
 instance : Invertible (2 : ℚ_[p]) := sorry
 
-variable {V : Type*} [AddCommGroup V] [Module ℚ_[p] V]
+variable {V : Type*} [AddCommGroup V] [Module ℚ_[p] V] [FiniteDimensional ℚ_[p] V]
   {Q : QuadraticForm ℚ_[p] V} (hQ : Q.Nondegenerate)
 
-lemma represents_zero_iff_of_rank_three [FiniteDimensional ℚ_[p] V] (b : Basis (Fin 3) ℚ_[p] V) :
+lemma represents_zero_iff_of_rank_three (b : Basis (Fin 3) ℚ_[p] V) :
     Q.represents 0 ↔
-      HilbertSymbol (-1 : ℚ_[p]ˣ)
-        (Units.mk0 (-Q.discr b) (neg_ne_zero.mpr ((Q.nondegenerate_iff_discr_ne_zero b).mp hQ))) =
-      HasseMinkoskiInvariant (Q.nondegenerate_associated_iff.mpr hQ).1 := by
+      HilbertSymbol (-1) (-Q.discr b) =
+        HasseMinkoskiInvariant (Q.nondegenerate_associated_iff.mpr hQ).1 := by
   sorry
 
-lemma represents_iff_of_rank_two [FiniteDimensional ℚ_[p] V] (b : Basis (Fin 2) ℚ_[p] V)
-    (a : ℚ_[p]ˣ) :
+lemma represents_iff_of_rank_two (b : Basis (Fin 2) ℚ_[p] V) (a : ℚ_[p]) :
     Q.represents a ↔
-      HilbertSymbol a
-        (Units.mk0 (-Q.discr b) (neg_ne_zero.mpr ((Q.nondegenerate_iff_discr_ne_zero b).mp hQ))) =
-      HasseMinkoskiInvariant (Q.nondegenerate_associated_iff.mpr hQ).1 := by
+      HilbertSymbol a (-Q.discr b) =
+        HasseMinkoskiInvariant (Q.nondegenerate_associated_iff.mpr hQ).1 := by
   sorry
 
 end Padic

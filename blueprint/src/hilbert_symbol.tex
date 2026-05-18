@@ -175,7 +175,7 @@ their valuations, and by $u_x$ and $u_y$ their unit parts.
 \begin{theorem}
 	\label{thm:padic_odd_p}
 	\lean{HilbertSymbol.padic_odd_p, HilbertSymbol.padic_odd_p_case00, HilbertSymbol.padic_odd_p_case10, HilbertSymbol.padic_odd_p_case11}
-	\uses{def:Hilbert_symbol, def:padicUnitPart, def:epsilon, def:legp}
+	\uses{def:Hilbert_symbol, def:padicUnitPart, def:epsilon, def:legendreSymbol}
 	\leanok
 Let $p$ be an odd prime and let $x,y \in (\Q_p)^\times$. Then
 \[(x,y) = (-1)^{v_x v_y\epsilon(p)}\left(\dfrac{u_x}{p}\right) \left(\dfrac{u_y}{p}\right),\]
@@ -348,6 +348,6 @@ We define the finite embedding of $\Q$ into $\rm{Prod\_over\_S} (S)$ as the natu
 The proof uses \code{Nat.infinite_setOf_prime_and_modEq}.
 
 \begin{proof}
-	\uses{def:Hilbert_symbol, def:at_p, def:at_infty, thm:chineseRemainder, thm:approximation}
+	\uses{def:Hilbert_symbol, def:at_p, def:at_infty, thm:approximation}
 TODO: necessity uses product formula, sufficiency uses the theorems in this section.
 \end{proof}
