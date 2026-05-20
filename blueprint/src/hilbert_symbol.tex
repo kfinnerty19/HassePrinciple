@@ -175,7 +175,7 @@ their valuations, and by $u_x$ and $u_y$ their unit parts.
 \begin{theorem}
 	\label{thm:padic_odd_p}
 	\lean{HilbertSymbol.padic_odd_p, HilbertSymbol.padic_odd_p_case00, HilbertSymbol.padic_odd_p_case10, HilbertSymbol.padic_odd_p_case11}
-	\uses{def:Hilbert_symbol, def:padicUnitPart, def:epsilon, def:legendreSymbol}
+	\uses{def:Hilbert_symbol, def:padicUnitPart, def:epsilon, def:legendreSym'}
 	\leanok
 Let $p$ be an odd prime and let $x,y \in (\Q_p)^\times$. Then
 \[(x,y) = (-1)^{v_x v_y\epsilon(p)}\left(\dfrac{u_x}{p}\right) \left(\dfrac{u_y}{p}\right),\]
@@ -294,7 +294,7 @@ space.
 
 \begin{definition}
 	\label{def:prod_over_S}
-	\lean{HilbertSymbol.prod_over_S}
+	\lean{Padic.prod_over_S}
 	\leanok
 Let $S$ be a finite subset of the set of prime numbers. We denote by $\prod_{p \in S} \Q_p$
 the product of the fields $\Q_p$ for $p \in S$. The set $\rm{Prod\_over\_S} (S)$ is defined as the
@@ -306,14 +306,14 @@ over the $n$-th prime for $n \in S$.
 
 \begin{definition}
 	\label{def:finite_embedding}
-	\lean{HilbertSymbol.finite_embedding}
+	\lean{Padic.finite_embedding}
 	\uses{def:prod_over_S}
 	\leanok
 We define the finite embedding of $\Q$ into $\rm{Prod\_over\_S} (S)$ as the natural diagonal map.
 \end{definition}
 
 \begin{theorem}\label{thm:approximation}%todo change references
-	\lean{HilbertSymbol.approximation}
+	\lean{Rat.approximation}
 	\uses{def:prod_over_S}
 	\leanok
 	The image of the finite embedding of $\Q$ into $\rm{Prod\_over\_S} (S)$ is dense with respect to

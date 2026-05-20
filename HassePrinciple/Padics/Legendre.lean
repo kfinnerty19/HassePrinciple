@@ -29,12 +29,12 @@ noncomputable def padicUnitPart {p : ℕ} [hp : Fact (Nat.Prime p)] (x : (ℚ_[p
   PadicInt.mkUnits (padic_unit_part_unit x)
 
 /-- TODO -/
-lemma is_unit_odd_p {p : ℕ} [hp : Fact (Nat.Prime p)] (hp2 : p ≠ 2) : ‖(p : ℚ_[2])‖ = 1 := by
+lemma is_twoadic_unit_odd_p {p : ℕ} [hp : Fact (Nat.Prime p)] (hp2 : p ≠ 2) : ‖(p : ℚ_[2])‖ = 1 := by
   sorry
 
 /-- TODO -/
 noncomputable abbrev p2 {p : ℕ} [hp : Fact (Nat.Prime p)] (hp2 : p ≠ 2) : ℤ_[2]ˣ :=
-  PadicInt.mkUnits (is_unit_odd_p hp2)
+  PadicInt.mkUnits (is_twoadic_unit_odd_p hp2)
 
 --not sure how to give the name Padic.legendreSym
 /-- TODO -/

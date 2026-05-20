@@ -10,7 +10,12 @@ public import Mathlib.NumberTheory.PrimeCounting
 
 @[expose] public section
 
+
 noncomputable section
+
+namespace Rat
+
+
 /-- TODO -/
 instance fact_prime_nth_prime (n : ℕ) : Fact (Nat.Prime (Nat.nth Nat.Prime n)) := by
   rw [fact_iff]
@@ -38,3 +43,5 @@ theorem approximation' (S : Finset ℕ) :
 theorem approximation (S : Finset ℕ) :
     Dense (Set.range (finite_embedding S)) := by
   sorry
+
+end Rat
