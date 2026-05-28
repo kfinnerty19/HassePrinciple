@@ -1,8 +1,9 @@
-module
+module  -- shake: keep-all
 
 public import HassePrinciple.HilbertSymbol.Basic
 public import HassePrinciple.HilbertSymbol.ExistenceTheorem
 public import HassePrinciple.NumberTheory.ApproximationTheorem
+public import HassePrinciple.NumberTheory.Hensel
 public import HassePrinciple.Padics.Legendre
 public import HassePrinciple.Padics.Lemmas
 public import HassePrinciple.Padics.Squares
