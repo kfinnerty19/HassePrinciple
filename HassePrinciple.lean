@@ -1,4 +1,4 @@
-module
+module  -- shake: keep-all
 
 public import HassePrinciple.HilbertSymbol.Basic
 public import HassePrinciple.HilbertSymbol.ExistenceTheorem
