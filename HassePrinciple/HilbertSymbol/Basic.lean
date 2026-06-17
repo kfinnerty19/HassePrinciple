@@ -169,22 +169,9 @@ theorem right_neg_self_eq_one (ha : a ≠ 0) : hilbertSym a (-a) = 1 := by
 @[simp]
 theorem right_one_minus_self_eq_one (ha0 : a ≠ 0) (ha1 : a ≠ 1) :
     hilbertSym a (1 - a) = 1 := by
-  unfold hilbertSym
-  split_ifs with h1 h2
-  · simp only [zero_ne_one]
-    contrapose h1
-    simp only [not_or]
-    constructor
-    · aesop
-    · contrapose ha1
-      calc
-        a = a + 0 := by ring
-        _ = a + (1 - a) := by rw [ha1]
-        _ = 1 := by ring
-  · rfl
-  · apply h2
-    use 1, 1, 1
-    aesop
+  rw [hilbertSym, if_neg (by simp [ha0, sub_ne_zero.mpr ha1.symm]), if_pos]
+  use 1, 1, 1
+  aesop
 
 /-- If the Hilbert symbol of a and b equals 1, then the Hilbert symbol of a and b * b' equals the
 Hilbert symbol of a and b'. -/
