@@ -51,23 +51,23 @@ lemma ne_zero_of_ne_zero (ha : a ≠ 0) (hb : b ≠ 0) : hilbertSym a b ≠ 0 :=
 /-- If `a` and `b` are multiplied by a square, the Hilbert symbol is unchanged. -/
 @[simp]
 lemma mul_square_eq (ha' : a' ≠ 0) (hb' : b' ≠ 0) :
-    hilbertSym (a * a'^2) (b * b'^2) = hilbertSym a b := by
-    simp only [hilbertSym, mul_eq_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true,
-      pow_eq_zero_iff, Prod.mk.injEq, not_and, Int.reduceNeg]
-    by_cases ha : a = 0
-    · simp [ha]
-    · by_cases hb : b = 0
-      · simp [hb]
-      · simp only [mul_eq_zero, ha, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, pow_eq_zero_iff,
-          false_or, hb, Prod.mk.injEq, not_and, Int.reduceNeg, or_self, ↓reduceIte]
-        rw [if_neg (by aesop)]
-        split_ifs with h h' h'
-        · rfl
-        · obtain ⟨z, x, y, h0, heq⟩ := h
-          exact h' ⟨z, (a' * x), (b' * y), by aesop, by rw [← heq]; ring⟩
-        · obtain ⟨z, x, y, h0, heq⟩ := h'
-          apply h ⟨ z, (1/a'*x), (1/b'*y), by aesop, by field_simp; rw [heq]⟩
-        · rfl
+  hilbertSym (a * a'^2) (b * b'^2) = hilbertSym a b := by
+  simp only [hilbertSym, mul_eq_zero, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true,
+    pow_eq_zero_iff, Prod.mk.injEq, not_and, Int.reduceNeg]
+  by_cases ha : a = 0
+  · simp [ha]
+  · by_cases hb : b = 0
+    · simp [hb]
+    · simp only [mul_eq_zero, ha, ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, pow_eq_zero_iff,
+        false_or, hb, Prod.mk.injEq, not_and, Int.reduceNeg, or_self, ↓reduceIte]
+      rw [if_neg (by aesop)]
+      split_ifs with h h' h'
+      · rfl
+      · obtain ⟨z, x, y, h0, heq⟩ := h
+        exact h' ⟨z, (a' * x), (b' * y), by aesop, by rw [← heq]; ring⟩
+      · obtain ⟨z, x, y, h0, heq⟩ := h'
+        apply h ⟨ z, (1/a'*x), (1/b'*y), by aesop, by field_simp; rw [heq]⟩
+      · rfl
 
 
 /-- The Hilbert symbol is commutative. -/
@@ -103,28 +103,31 @@ theorem eq_one_iff (ha : a ≠ 0) (hb : b ≠ 0) (hc : ¬IsSquare b) :
       reduceCtorEq, imp_false, not_forall, not_not] at hhilb
     obtain ⟨z, x, y, hnonzero, heq⟩ := hhilb
     use (QuadraticAlgebra.mk (z/x) (y/x))
-    -- I think this computation would become more readable with a calc block.
-    simp only [QuadraticAlgebra.norm_def, zero_mul, add_zero]
-    field_simp
+    symm
     rw [sub_eq_zero] at heq
-    ring_nf
-    field_simp
-    rw [← heq, sub_sub_cancel]
-    field_simp
-    rw [div_self]
-    simp only [ne_eq]
-    contrapose heq
-    rw [heq]
-    ring_nf
-    contrapose hc
-    unfold IsSquare
-    use z/y
-    field_simp
-    rw [hc]
-    field_simp
-    rw [div_self]
-    simp only [ne_eq]
-    aesop
+    have hx : x ≠ 0 := by
+      simp only [ne_eq]
+      contrapose heq
+      rw [heq]
+      ring_nf
+      contrapose hc
+      unfold IsSquare
+      use z/y
+      field_simp
+      rw [hc]
+      field_simp
+      rw [div_self]
+      simp only [ne_eq]
+      aesop
+    calc
+      QuadraticAlgebra.norm { re := z / x, im := y / x }
+      =  z / x * (z / x) - b * (y / x) * (y / x)  := by
+        simp only [QuadraticAlgebra.norm, zero_mul, add_zero, MonoidHom.coe_mk, OneHom.coe_mk]
+      _ = z^2/x^2 - b * (y^2/x^2) := by field_simp
+      _ = (z^2-b*y^2)/x^2 := by ring
+      _ = a := by
+        rw [← heq, sub_sub_cancel]
+        field_simp
   · rw [if_pos]
     obtain ⟨⟨p, q⟩, hnorm'⟩ := hnorm
     use p, 1, q, by aesop
