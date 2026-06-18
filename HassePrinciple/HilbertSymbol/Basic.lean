@@ -105,25 +105,13 @@ theorem eq_one_iff (ha : a ≠ 0) (hb : b ≠ 0) (hc : ¬IsSquare b) :
     symm
     rw [sub_eq_zero] at heq
     have hx : x ≠ 0 := by
-      simp only [ne_eq]
       contrapose heq
-      rw [heq]
-      ring_nf
       contrapose hc
-      unfold IsSquare
-      use z/y
-      field_simp
-      rw [hc]
-      field_simp
-      rw [div_self]
-      simp only [ne_eq]
-      aesop
-    calc
-      QuadraticAlgebra.norm { re := z / x, im := y / x }
-      =  z / x * (z / x) - b * (y / x) * (y / x)  := by
-        simp only [QuadraticAlgebra.norm, zero_mul, add_zero, MonoidHom.coe_mk, OneHom.coe_mk]
-      _ = z^2/x^2 - b * (y^2/x^2) := by field_simp
-      _ = (z^2-b*y^2)/x^2 := by ring
+      use z / y
+      grind
+    calc QuadraticAlgebra.norm { re := z / x, im := y / x }
+      _ = z / x * (z / x) - b * (y / x) * (y / x) := by simp [QuadraticAlgebra.norm]
+      _ = (z ^ 2 - b * y ^ 2) / x ^ 2 := by ring
       _ = a := by
         rw [← heq, sub_sub_cancel]
         field_simp
