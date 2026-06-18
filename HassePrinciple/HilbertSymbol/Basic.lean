@@ -216,8 +216,10 @@ theorem right_mul_eq_of_eq_one (hab : hilbertSym a b = 1) :
     · by_cases hb'a : hilbertSym b' a = 1
       · rw [eq_one_iff] at hb'a
         obtain ⟨ t', ht'⟩ := hb'a
-        have hnorm : a*a' = QuadraticAlgebra.norm t*t' := by
-      · sorry
+        have hnorm : (b*b') = QuadraticAlgebra.norm (t*t') := by
+          simp only [map_mul]
+          rw [ht, ht']
+
 
 /-- The Hilbert symbol of a and -a*b, equals the Hilbert symbol of a and b. -/
 @[simp]
