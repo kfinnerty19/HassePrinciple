@@ -96,11 +96,11 @@ lemma comm : hilbertSym a b = hilbertSym b a := by
 # Basic properties of the Hilbert symbol
 -/
 
-/- Split in two lemmas, one for `QuadraticAlgebra k b 0 = k`(right_square_eq_one) and the other for
-  `QuadraticAlgebra k b 0 ≠ k` (immediately below). -/
+/- split into when it is and is not a square-/
 
-/-- The Hilbert symbol of a and b (both nonzero) equals 1 if and only if a is a norm from the
+/- The Hilbert symbol of a and b (both nonzero) equals 1 if and only if a is a norm from the
   quadratic algebra `QuadraticAlgebra k b 0`. -/
+
 theorem eq_one_iff (ha : a ≠ 0) (hb : b ≠ 0) (hc : ¬IsSquare b) :
     hilbertSym a b = 1 ↔ ∃ t : QuadraticAlgebra k b 0, a = QuadraticAlgebra.norm t := by
     constructor
@@ -110,35 +110,27 @@ theorem eq_one_iff (ha : a ≠ 0) (hb : b ≠ 0) (hc : ¬IsSquare b) :
       · contrapose hhilb
         aesop
       · obtain ⟨ z, x, y, hnonzero, heq⟩ := h2
-        use (QuadraticAlgebra.mk (z/x) (y/x) : (QuadraticAlgebra k b 0))
-        rw [QuadraticAlgebra.norm_def]
-        field_simp
-        rw [sub_eq_zero] at heq
-        ring_nf
-        field_simp
-        rw [mul_comm (y^2) b, ← heq, sub_sub_cancel]
-        field_simp
-        rw [div_self]
-        simp only [ne_eq]
-        contrapose heq
-        rw [heq]
-        ring_nf
-        contrapose hc
-        unfold IsSquare
-        use z/y
-        field_simp
-        rw [hc]
-        field_simp
-        rw [div_self]
-        simp only [ne_eq]
-        contrapose hnonzero
-        simp only [Prod.mk.injEq]
-        constructor
-        · rw [hnonzero] at hc
+        by_cases hx: x ≠ 0
+        · use (QuadraticAlgebra.mk (z/x) (y/x) : (QuadraticAlgebra k b 0))
+          rw [QuadraticAlgebra.norm_def]
+          field_simp
+          rw [sub_eq_zero] at heq
+          ring_nf
+          field_simp
+          rw [mul_comm (y^2) b, ← heq, sub_sub_cancel]
+        · contrapose hc
+          simp only [ne_eq, not_not] at hx
+          rw [hx] at heq
           simp only [ne_eq, OfNat.ofNat_ne_zero, not_false_eq_true, zero_pow, mul_zero,
-            pow_eq_zero_iff] at hc
-          exact hc
-        · exact ⟨ heq, hnonzero⟩
+            sub_zero] at heq
+          unfold IsSquare
+          use z/y
+          field_simp
+          rw [sub_eq_zero] at heq
+          rw [heq]
+          field_simp
+          rw [div_self]
+          aesop
     · intro hnorm
       unfold hilbertSym
       split_ifs with h1 h2
@@ -205,19 +197,56 @@ Hilbert symbol of a and b'. -/
 @[simp]
 theorem right_mul_eq_of_eq_one (hab : hilbertSym a b = 1) :
     hilbertSym a (b * b') = hilbertSym a b' := by
-  sorry
+  have habnzero : a ≠ 0 ∧ b ≠ 0 := by
+    unfold hilbertSym at hab
+    aesop
+  rw [comm]
+  nth_rw 2 [comm]
+  rw [comm] at hab
+  obtain ⟨ hanzero, hbnzero ⟩ := habnzero
+  by_cases ha: IsSquare a
+  · obtain ⟨ sqrta, sqrtadef⟩ := ha
+    rw [sqrtadef,← pow_two] at hab
+    sorry
+  · rw [eq_one_iff hbnzero hanzero ha] at hab
+    obtain ⟨ t, ht⟩ := hab
+    by_cases hbb'zero : b*b' = 0
+    · rw [hbb'zero]
+      aesop
+    · by_cases hb'a : hilbertSym b' a = 1
+      · rw [eq_one_iff] at hb'a
+        obtain ⟨ t', ht'⟩ := hb'a
+        have hnorm : a*a' = QuadraticAlgebra.norm t*t' := by
+      · sorry
 
 /-- The Hilbert symbol of a and -a*b, equals the Hilbert symbol of a and b. -/
 @[simp]
 theorem right_neg_mul : hilbertSym a (- (a * b)) = hilbertSym a b := by
-  sorry
+  by_cases hzero : a = 0
+  · simp [hzero]
+    unfold hilbertSym
+    aesop
+  · have hnega : hilbertSym a (-a) = 1 := by
+      apply right_neg_self_eq_one
+      simp only [ne_eq]
+      exact hzero
+    sorry
+  calc
+    hilbertSym a (- (a * b)) = hilbertSym a (-a*b) := by ring_nf
+    _ = hilbertSym a b := by sorry --rw [right_mul_eq_of_eq_one hnega]
 
 /-- If a is different from 1, then the Hilbert symbol of a and (1-a)*b equals the Hilbert symbol of
 a and b. -/
 @[simp]
 theorem right_minus_self_mul (ha : a ≠ 1) :
     hilbertSym a ((1 - a) * b) = hilbertSym a b := by
-  sorry
+  by_cases hzero : a = 0
+  · aesop
+  · have hone : hilbertSym a (1-a) = 1 := by
+      apply right_one_minus_self_eq_one hzero
+      exact ha
+    apply right_mul_eq_of_eq_one
+    exact hone
 
 end Field
 
