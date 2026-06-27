@@ -160,7 +160,7 @@ theorem eq_one_or_neg_one (ha : a ≠ 0) (hb : b ≠ 0) :
   rw [hilbertSym]
   split_ifs <;> aesop
 
-/-- If both a and b are nonzero, the Hilbert symbol of a and b is -1 if and only if it is not 1.-/
+/-- If both a and b are nonzero, the Hilbert symbol of a and b is -1 if and only if it is not 1. -/
 theorem eq_neg_one_iff_not_one (ha : a ≠ 0) (hb : b ≠ 0) :
     hilbertSym a b = -1 ↔ ¬hilbertSym a b = 1 := by
   refine ⟨fun h ↦ by simp [h], fun h ↦ ?_⟩
