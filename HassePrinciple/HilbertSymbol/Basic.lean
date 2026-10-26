@@ -27,15 +27,13 @@ lemma epsilon_eq_zero_or_one {u : (PadicInt 2)ˣ} : epsilon u = 0 ∨ epsilon u 
 
 lemma epsilon_ne_zero_iff_eq_one {u : (PadicInt 2)ˣ} : ¬(epsilon u = 0) ↔ epsilon u = 1 := by grind
 
-lemma cases_toZModPow2 (u : (PadicInt 2)ˣ) : Units.map (toZModPow 2).toMonoidHom u = 1 ∨
-    Units.map (toZModPow 2).toMonoidHom u = -1 := by
---help!
-  sorry
+lemma units_mod4 (u : (ZMod (2 ^ 2))ˣ) : u = 1 ∨ u = -1 := by
+  decide +revert
 
 lemma epsilon_hom_mod2 {u v : (PadicInt 2)ˣ} :
     (epsilon (u * v) : ZMod 2) = (epsilon u + epsilon v : ZMod 2) := by
-  rcases cases_toZModPow2 u with h
-  rcases cases_toZModPow2 v with h'
+  rcases units_mod4 (Units.map (toZModPow 2).toMonoidHom u) with h
+  rcases units_mod4 (Units.map (toZModPow 2).toMonoidHom v) with h'
   aesop
 
 lemma epsilon_of_square {u : (PadicInt 2)ˣ} : epsilon (u ^ 2) = 0 := by
@@ -57,7 +55,21 @@ lemma omega_ne_zero_iff_eq_one {u : (PadicInt 2)ˣ} : ¬(omega u = 0) ↔ omega 
 
 -- not sure what I was trying with epsilon is the best option here
 lemma omega_hom_mod2 {u v : (PadicInt 2)ˣ} :
-    (omega (u * v) : ZMod 2) = (omega u + omega v : ZMod 2) := sorry
+    (omega (u * v) : ZMod 2) = (omega u + omega v : ZMod 2) := by
+  simp only [omega, Nat.reducePow, RingHom.toMonoidHom_eq_coe, map_mul, Int.cast_ite, Int.cast_zero,
+    Int.cast_one]
+  let x := Units.map (toZModPow 3).toMonoidHom u
+  have hx := ZMod.val_coe_unit_coprime x
+  let y := Units.map (toZModPow 3).toMonoidHom v
+  have hy := ZMod.val_coe_unit_coprime y
+  let xy := Units.map (toZModPow 3).toMonoidHom (u * v)
+  have hxy := ZMod.val_coe_unit_coprime xy
+  cases x.val
+
+
+
+
+  sorry
 
 lemma omega_of_square {u : (PadicInt 2)ˣ} : omega (u ^ 2) = 0 := by
   have : (omega (u ^ 2) : ZMod 2) = 0 := by
