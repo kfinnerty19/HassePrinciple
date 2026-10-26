@@ -18,13 +18,54 @@ public import Mathlib.NumberTheory.LSeries.PrimesInAP
 -- Notation:
 namespace PadicInt
 
-/-- epsilon(u) is the class modulo 2 of (u-1)/2. -/
-noncomputable abbrev epsilon (u : (PadicInt 2)ˣ) : ℤ :=
-  if (u.val).appr 2 % 4 = 1 then 0 else 1
 
-/-- omega(u) is the class modulo 2 of (u^2-1)/8. -/
+/-- epsilon(u) is the class modulo 2 of (u - 1) / 2. -/
+noncomputable abbrev epsilon (u : (PadicInt 2)ˣ) : ℤ :=
+  if Units.map (toZModPow 2).toMonoidHom u = 1 then 0 else 1
+
+lemma epsilon_eq_zero_or_one {u : (PadicInt 2)ˣ} : epsilon u = 0 ∨ epsilon u = 1 := by grind
+
+lemma epsilon_ne_zero_iff_eq_one {u : (PadicInt 2)ˣ} : ¬(epsilon u = 0) ↔ epsilon u = 1 := by grind
+
+lemma cases_toZModPow2 (u : (PadicInt 2)ˣ) : Units.map (toZModPow 2).toMonoidHom u = 1 ∨
+    Units.map (toZModPow 2).toMonoidHom u = -1 := by
+--help!
+  sorry
+
+lemma epsilon_hom_mod2 {u v : (PadicInt 2)ˣ} :
+    (epsilon (u * v) : ZMod 2) = (epsilon u + epsilon v : ZMod 2) := by
+  rcases cases_toZModPow2 u with h
+  rcases cases_toZModPow2 v with h'
+  aesop
+
+lemma epsilon_of_square {u : (PadicInt 2)ˣ} : epsilon (u ^ 2) = 0 := by
+  have : (epsilon (u ^ 2) : ZMod 2) = 0 := by
+    rw [pow_two, epsilon_hom_mod2]
+    aesop
+  by_contra
+  simp only [epsilon_ne_zero_iff_eq_one] at this
+  aesop
+
+/-- omega(u) is the class modulo 2 of (u ^ 2 - 1) / 8. -/
 noncomputable abbrev omega (u : (PadicInt 2)ˣ) : ℤ :=
-  if (u.val).appr 3 % 8 = 1 ∨ (u.val).appr 3 % 8 = 7 then 0 else 1
+  if Units.map (toZModPow 3).toMonoidHom u = 1 ∨
+    Units.map (toZModPow 3).toMonoidHom u = -1 then 0 else 1
+
+lemma omega_eq_zero_or_one {u : (PadicInt 2)ˣ} : omega u = 0 ∨ omega u = 1 := by grind
+
+lemma omega_ne_zero_iff_eq_one {u : (PadicInt 2)ˣ} : ¬(omega u = 0) ↔ omega u = 1 := by grind
+
+-- not sure what I was trying with epsilon is the best option here
+lemma omega_hom_mod2 {u v : (PadicInt 2)ˣ} :
+    (omega (u * v) : ZMod 2) = (omega u + omega v : ZMod 2) := sorry
+
+lemma omega_of_square {u : (PadicInt 2)ˣ} : omega (u ^ 2) = 0 := by
+  have : (omega (u ^ 2) : ZMod 2) = 0 := by
+    rw [pow_two, omega_hom_mod2]
+    aesop
+  by_contra
+  simp only [omega_ne_zero_iff_eq_one] at this
+  aesop
 
 end PadicInt
 
