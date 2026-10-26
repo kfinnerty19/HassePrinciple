@@ -53,10 +53,16 @@ lemma omega_eq_zero_or_one {u : (PadicInt 2)ˣ} : omega u = 0 ∨ omega u = 1 :=
 
 lemma omega_ne_zero_iff_eq_one {u : (PadicInt 2)ˣ} : ¬(omega u = 0) ↔ omega u = 1 := by grind
 
+lemma units_mod8 (u : (ZMod (2 ^ 3))ˣ) : u = 1 ∨ u = -1 ∨
+    u = ⟨3, 3, by aesop, by aesop⟩ ∨ u = -⟨3, 3, by aesop, by aesop⟩ := by
+  decide +revert
+
 -- not sure what I was trying with epsilon is the best option here
 lemma omega_hom_mod2 {u v : (PadicInt 2)ˣ} :
     (omega (u * v) : ZMod 2) = (omega u + omega v : ZMod 2) := by
-  sorry
+  rcases units_mod8 (Units.map (toZModPow 3).toMonoidHom u) with h
+  rcases units_mod8 (Units.map (toZModPow 3).toMonoidHom v) with h'
+  aesop
 
 lemma omega_of_square {u : (PadicInt 2)ˣ} : omega (u ^ 2) = 0 := by
   have : (omega (u ^ 2) : ZMod 2) = 0 := by
