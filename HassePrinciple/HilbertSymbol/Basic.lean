@@ -67,6 +67,13 @@ lemma omega_of_square {u : (PadicInt 2)ˣ} : omega (u ^ 2) = 0 := by
   simp only [omega_ne_zero_iff_eq_one] at this
   aesop
 
+--I didn't find this in Mathlib, not sure where to put it, but may be useful for the formula
+lemma _root_.Int.even_diff_iff_eq_mod_two {x y : ℤ} : Even (y - x) ↔ (x : ZMod 2) = y := by
+  refine ⟨fun h ↦ (ZMod.intCast_eq_intCast_iff_dvd_sub x y 2).mpr (Even.two_dvd h), fun h ↦ ?_⟩
+  refine ZMod.intCast_eq_zero_iff_even.mp ?_
+  simp only [Int.cast_sub]
+  exact sub_eq_zero.mpr (id (Eq.symm h))
+
 end PadicInt
 
 -- `k` is a field and typically will be either `ℝ` or `ℚ_[p]`, but we need less for the definition.
