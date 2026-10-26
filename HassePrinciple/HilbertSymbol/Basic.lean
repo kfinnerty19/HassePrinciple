@@ -56,19 +56,6 @@ lemma omega_ne_zero_iff_eq_one {u : (PadicInt 2)ˣ} : ¬(omega u = 0) ↔ omega 
 -- not sure what I was trying with epsilon is the best option here
 lemma omega_hom_mod2 {u v : (PadicInt 2)ˣ} :
     (omega (u * v) : ZMod 2) = (omega u + omega v : ZMod 2) := by
-  simp only [omega, Nat.reducePow, RingHom.toMonoidHom_eq_coe, map_mul, Int.cast_ite, Int.cast_zero,
-    Int.cast_one]
-  let x := Units.map (toZModPow 3).toMonoidHom u
-  have hx := ZMod.val_coe_unit_coprime x
-  let y := Units.map (toZModPow 3).toMonoidHom v
-  have hy := ZMod.val_coe_unit_coprime y
-  let xy := Units.map (toZModPow 3).toMonoidHom (u * v)
-  have hxy := ZMod.val_coe_unit_coprime xy
-  cases x.val
-
-
-
-
   sorry
 
 lemma omega_of_square {u : (PadicInt 2)ˣ} : omega (u ^ 2) = 0 := by
@@ -80,11 +67,8 @@ lemma omega_of_square {u : (PadicInt 2)ˣ} : omega (u ^ 2) = 0 := by
   aesop
 
 --I didn't find this in Mathlib, not sure where to put it, but may be useful for the formula
-lemma _root_.Int.even_diff_iff_eq_mod_two {x y : ℤ} : Even (y - x) ↔ (x : ZMod 2) = y := by
-  refine ⟨fun h ↦ (ZMod.intCast_eq_intCast_iff_dvd_sub x y 2).mpr (Even.two_dvd h), fun h ↦ ?_⟩
-  refine ZMod.intCast_eq_zero_iff_even.mp ?_
-  simp only [Int.cast_sub]
-  exact sub_eq_zero.mpr (id (Eq.symm h))
+lemma _root_.Int.even_sub_iff_eq_mod_two {x y : ℤ} : Even (y - x) ↔ (y : ZMod 2) = x := by
+  rw [← sub_eq_zero, ← Int.cast_sub, ZMod.intCast_eq_zero_iff_even]
 
 end PadicInt
 
