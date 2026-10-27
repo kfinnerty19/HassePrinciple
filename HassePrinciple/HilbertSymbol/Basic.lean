@@ -472,19 +472,38 @@ theorem natCast {a : ℚˣ} (ha : ∀ (d : ℚˣ) (_ : IsNegOneOrPrime d),
 
 namespace eventually_one
 
+/-- Away from 2, the local symbol of -1 and -1 is 1. -/
+lemma neg_one_neg_one_eq_one {p : Primes} (hp2 : p ≠ ⟨2, prime_two⟩) :
+    hilbertSym ((-1 : ℚ) : ℚ_[p]) ((-1 : ℚ)) = 1 := by
+  obtain ⟨p, hp⟩ := p
+  have hp2' : p ≠ 2 := fun h ↦ hp2 (Subtype.ext h)
+  have hfact : Fact (Nat.Prime p) := ⟨hp⟩
+  exact eq_one_of_valuation_zero hp2'
+    (IsNegOneOrPrime.valuation_ne_zero (Or.inl rfl))
+    (IsNegOneOrPrime.valuation_ne_zero (Or.inl rfl))
+    (Padic.valuation_eq_zero_of_neg_one_or_prime (Or.inl rfl))
+    (Padic.valuation_eq_zero_of_neg_one_or_prime (Or.inl rfl))
+
 /-- For all but finitely many primes, the Hilbert symbol of -1 and -1 is 1. -/
 theorem of_neg_one_of_neg_one :
     ∀ᶠ (p : Primes) in cofinite, hilbertSym ((-1 : ℚ) : ℚ_[p]) ((-1 : ℚ)) = 1 := by
   apply (Set.finite_singleton ⟨2, prime_two⟩).subset
   intro ⟨p, hp⟩ hne
   by_contra hcon
-  have hp2 : p ≠ 2 := by contrapose! hcon; aesop
+  exact hne (neg_one_neg_one_eq_one hcon)
+
+/-- Fix b a prime. Away from 2 and b, the Hilbert symbol of -1 and b is 1. -/
+lemma neg_one_prime_eq_one {b : ℕ} {p : Primes} (hb : Nat.Prime b) (hp2 : p ≠ ⟨2, prime_two⟩)
+  (hpb : p ≠ ⟨b, hb⟩) : hilbertSym ((-1 : ℚ) : ℚ_[p]) (b : ℚ) = 1 := by
+  obtain ⟨p, hp⟩ := p
+  have hp2' : p ≠ 2 := fun h ↦ hp2 (Subtype.ext h)
+  have hpr : p ≠ b := fun h ↦ hpb (Subtype.ext h)
   have hfact : Fact (Nat.Prime p) := ⟨hp⟩
-  exact hne (eq_one_of_valuation_zero hp2
+  exact eq_one_of_valuation_zero hp2'
     (IsNegOneOrPrime.valuation_ne_zero (Or.inl rfl))
-    (IsNegOneOrPrime.valuation_ne_zero (Or.inl rfl))
+    (IsNegOneOrPrime.valuation_ne_zero (Or.inr ⟨b, hb, rfl⟩))
     (Padic.valuation_eq_zero_of_neg_one_or_prime (Or.inl rfl))
-    (Padic.valuation_eq_zero_of_neg_one_or_prime (Or.inl rfl)))
+    (Padic.valuation_eq_zero_of_neg_one_or_prime (Or.inr ⟨b, hb, rfl, hpr⟩))
 
 /-- Fix b a prime. For all but finitely many primes, the Hilbert symbol of -1 and b is 1. -/
 theorem of_neg_one_of_prime {b : ℕ} (hb : Nat.Prime b) :
@@ -492,16 +511,14 @@ theorem of_neg_one_of_prime {b : ℕ} (hb : Nat.Prime b) :
   refine (Set.toFinite ({⟨2, prime_two⟩, ⟨b, hb⟩} : Set Primes)).subset ?_
   intro ⟨p, hp⟩ hne
   by_contra hcon
-  have hpr : p ≠ b := fun h ↦ hcon (by subst h; tauto)
-  have hp2 : p ≠ 2 := by
+  have hpb : (⟨p, hp⟩ : Primes) ≠ ⟨b, hb⟩ := by
+    intro hb'
+    exact hcon (Set.mem_insert_iff.mpr (Or.inr (Set.mem_singleton_iff.mpr hb')))
+  have hp2 : (⟨p, hp⟩ : Primes) ≠ ⟨2, prime_two⟩  := by
     intro h2
-    exact hcon (Set.mem_insert_iff.mpr (Or.inl (Subtype.ext h2)))
+    exact hcon (Set.mem_insert_iff.mpr (Or.inl (Set.mem_singleton_iff.mpr h2)))
   have hfact : Fact (Nat.Prime p) := ⟨hp⟩
-  exact hne (eq_one_of_valuation_zero hp2
-    (IsNegOneOrPrime.valuation_ne_zero (Or.inl rfl))
-    (IsNegOneOrPrime.valuation_ne_zero (Or.inr ⟨b, hb, rfl⟩))
-    (Padic.valuation_eq_zero_of_neg_one_or_prime (Or.inl rfl))
-    (Padic.valuation_eq_zero_of_neg_one_or_prime (Or.inr ⟨b, hb, rfl, hpr⟩)))
+  exact hne (neg_one_prime_eq_one hb hp2 hpb)
 
 /-- Given primes a and b, for all but finitely many primes, the Hilbert symbol of a and b is 1. -/
 theorem of_prime_of_prime {a b : ℕ} (ha : Nat.Prime a) (hb : Nat.Prime b) :
@@ -564,9 +581,115 @@ theorem almost_all_one (a b : ℚˣ) :
     exact one_reduced_general hbase_b a
   · apply of_IsNegOneOrPrime
 
-/-- The product of the Hilbert symbols at all places equals 1. -/
-theorem prod_eq_one (a b : ℚˣ) :
-    (∏ᶠ (p : Primes), hilbertSym (a : ℚ_[p]) b) * hilbertSym (a : ℝ) b = 1 := by
-  sorry
+/-- The product of the Hilbert symbols of `a` and `b` at all places. -/
+noncomputable abbrev hilbertProduct (a b : ℚˣ) :=
+  (∏ᶠ (p : Primes), hilbertSym (a : ℚ_[p]) b) * hilbertSym (a : ℝ) b
+
+/-- The function that takes a prime `p` and gives the local symbol of `a` and `b` at `p`
+has finite multiplicative support. -/
+lemma hasFiniteMulSupport_local (a b : ℚˣ) :
+  (fun p : Primes => hilbertSym (a : ℚ_[p]) b).HasFiniteMulSupport :=
+  eventually_cofinite.mp (almost_all_one a b)
+
+/-- The function hilbertProduct is multiplicative in its first term. -/
+lemma hilbertProduct_mul_left (a₁ a₂ b : ℚˣ) :
+  hilbertProduct (a₁ * a₂) b = hilbertProduct a₁ b * hilbertProduct a₂ b := by
+  unfold hilbertProduct
+  simp only [Units.val_mul, Rat.cast_mul, HasBilinHilbertSym.mul_left_eq]
+  rw [finprod_mul_distrib (hasFiniteMulSupport_local a₁ b) (hasFiniteMulSupport_local a₂ b)]
+  rw [mul_mul_mul_comm]
+
+/-- The hilbertProduct of any rational unit with 1 is 1. -/
+lemma hilbertProduct_one_right (a : ℚˣ) : hilbertProduct a 1 = 1 := by
+  simp [hilbertProduct, one_right, a.ne_zero]
+
+/-- The function hilbertProduct is commutative. -/
+lemma hilbertProduct_comm (a b : ℚˣ) : hilbertProduct a b = hilbertProduct b a := by
+  unfold hilbertProduct; congr 1
+  · apply finprod_congr fun p => comm
+  · exact comm
+
+/-- If `hilbertProduct a d = 1` for every `d` that is -1 or prime, then it holds for every `b`. -/
+lemma hilbertProduct_left {a : ℚˣ}
+    (ha : ∀ (d : ℚˣ) (_ : IsNegOneOrPrime d), hilbertProduct a d = 1) {b : ℕ} (hb : b ≠ 0) :
+    hilbertProduct a (Units.mk0 (b : ℚ) (Nat.cast_ne_zero.mpr hb)) = 1 := by
+    induction b using UniqueFactorizationMonoid.induction_on_prime with
+    | h₁ => tauto
+    | h₂ x hx =>
+      obtain xeq1 : x = 1 := Nat.isUnit_iff.mp hx
+      convert hilbertProduct_one_right a using 2; aesop
+    | h₃ m p' hm hp' ham =>
+      simp only [Nat.cast_mul, Units.mk0_mul]
+      rw [hilbertProduct_comm, hilbertProduct_mul_left]
+      nth_rw 2 [hilbertProduct_comm]
+      rw [ham hm, mul_one]
+      have hp'nzero : (p' : ℚ) ≠ 0 := by exact_mod_cast hp'.ne_zero
+      have hp'prime : Nat.Prime p' := prime_iff.mpr hp'
+      have hd : IsNegOneOrPrime ((Units.mk0 (p' : ℚ) hp'nzero : ℚˣ) : ℚ) := by
+        unfold IsNegOneOrPrime; aesop
+      rw [hilbertProduct_comm]
+      exact ha _ hd
+
+/-- The function hilbertProduct of -1 and -1 is 1. -/
+lemma hilbertProduct_neg_one_neg_one {c d : ℚˣ} (hc : (c : ℚ) = -1) (hd : (d : ℚ) = -1) :
+    hilbertProduct c d = 1 := by
+    unfold hilbertProduct
+    rw [hc, hd]
+    rw [finprod_eq_single (α := Primes) _ (⟨2, prime_two⟩ : Primes)
+      (fun p hp ↦ eventually_one.neg_one_neg_one_eq_one hp)]
+    simp only [Rat.cast_neg, Rat.cast_one]
+    unfold hilbertSym
+    split_ifs <;> simp_all
+    · sorry
+    · sorry
+
+-- part 3a: If a=b=-1, then the only times the symbol is -1 is at infinity and 2.
+-- Since this is even, the product is 1.
+
+/-- The function hilbertProduct of -1 and a prime number is 1. -/
+lemma hilbertProduct_neg_one_prime {c d : ℚˣ} {q : ℕ} (hc : (c : ℚ) = -1) (hq : Nat.Prime q)
+    (hd : (d : ℚ) = q) : hilbertProduct c d = 1 := by
+    sorry
+  -- part 3b: If a=-1, b=l odd prime, then symbol at 2 and l are both (-1)^e(l) and all others are 1
+  -- here e(l) is the class modulo 2 of (u-1)/2 where u is viewed as a 2-adic unit
+  -- case 3b': If a=-1, b=2 then the symbol is always 1 by two_adic_eq.
+-- https://leanprover-community.github.io/mathlib4_docs/Mathlib/NumberTheory/LegendreSymbol/QuadraticReciprocity.html
+-- for 3b and 3c: theorem legendreSym.at_neg_one{p : ℕ} [Fact (Nat.Prime p)] (hp : p ≠ 2) :
+-- legendreSym p (-1) = ZMod.χ₄ ↑p
+
+
+/-- The function hilbertProduct of two prime numbers is 1. -/
+lemma hilbertProduct_prime_prime {c d : ℚˣ} {q r : ℕ} (hq : Nat.Prime q) (hr : Nat.Prime r)
+    (hc : (c : ℚ) = q) (hd : (d : ℚ) = r) : hilbertProduct c d = 1 := by
+    sorry
+ -- part 3d: need more cases! If one of them is 2, we have a different argument
+  -- at 2: use two_adic_eq and at k: use padic_odd_eq
+  -- part 3d': If a and b are different primes j and k both not 2, use QR argument.
+  -- part 3d'': If a and b are the same prime, (j,j)=(-1,j) always (use right_neg_self_eq_one).
+ -- for 3d: legendreSym.at_two{p : ℕ} [Fact (Nat.Prime p)] (hp : p ≠ 2) :
+-- legendreSym p 2 = ZMod.χ₈ ↑p
+-- for 3d' legendreSym.quadratic_reciprocity{p q : ℕ} [Fact (Nat.Prime p)] [Fact (Nat.Prime q)]
+-- (hp : p ≠ 2) (hq : q ≠ 2) (hpq : p ≠ q) :
+-- legendreSym q ↑p * legendreSym p ↑q = (-1) ^ (p / 2 * (q / 2))
+
+/-- The product of the Hilbert symbols of `a` and `b  ` at all places equals 1. -/
+theorem prod_eq_one (a b : ℚˣ) : hilbertProduct a b = 1 := by
+  suffices hreduction : ∀ (c d : ℚˣ) (hc : IsNegOneOrPrime c) (hd : IsNegOneOrPrime d),
+    hilbertProduct c d = 1 by
+    have hreduction_right (d : ℚˣ) (hd : IsNegOneOrPrime d) :
+      hilbertProduct b d = 1 := by
+      rw [hilbertProduct_comm]
+      --exact hilbertProduct_left (fun _ he ↦ hreduction _ _ hd he) b
+      sorry
+    rw [hilbertProduct_comm]
+    --exact hilbertProduct_left hreduction_right a
+    sorry
+  intro c d hc hd
+  rcases hc with hc | ⟨r, hr, hc⟩ <;> rcases hd with hd | ⟨q, hq, hd⟩
+  · exact hilbertProduct_neg_one_neg_one hc hd
+  · exact hilbertProduct_neg_one_prime hc hq hd
+  · rw [hilbertProduct_comm]
+    exact hilbertProduct_neg_one_prime hd hr hc
+  · exact hilbertProduct_prime_prime hr hq hc hd
 
 end hilbertSym
